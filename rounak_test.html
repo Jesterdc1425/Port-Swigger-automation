@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Fetch Example</title>
+</head>
+<body>
+  <h1>Hello from Fetch!</h1>
+
+  <script>
+    fetch('http://172.31.54.71/build/tokenpage.php')
+      .then(response => response.text())
+      .then(data => {
+        console.log("The website said:", data);
+      })
+      .catch(error => {
+        console.error("Something went wrong:", error);
+      });
+  </script>
+</body>
+</html>
